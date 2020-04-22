@@ -47,15 +47,29 @@
 
 > Released 2020/04/22
 
-<<< TODO Introduction, plus any sections below >>>
-
 ### Fixes
 
 ##### Core
 
+  - Disable JIT mlcache:get_bulk() on ARM64
+    [#5797](https://github.com/Kong/kong/pull/5797)
+  - Don't incrementing log counters on unexpected errors
+    [#5783](https://github.com/Kong/kong/pull/5783)
+  - Invalidate target history at cleanup so balancers stay sync'd
+    [#5775](https://github.com/Kong/kong/pull/5775)
+  - Set a log prefix with the upstream name
+    [#5773](https://github.com/Kong/kong/pull/5773)
+  - Fix memory leaks when loading a declarative config that
+    [#5766](https://github.com/Kong/kong/pull/5766)
+
 ##### CLI
 
 ##### Configuration
+
+  - Send declarative config updates to stream subsystem via Unix domain
+    [#5797](https://github.com/Kong/kong/pull/5797)
+  - Fix so declarative cache is purged before loading
+    [#5769](https://github.com/Kong/kong/pull/5769)
 
 ##### Admin API
 
