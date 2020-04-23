@@ -239,6 +239,10 @@ function declarative.load_into_db(dc_table)
   end
 
   local schema, primary_key, ok, err, err_t
+  local options
+  if dc_table._transactions_enabled then
+    options = { transactions_enabled = true }
+  end
   for i = 1, #sorted_schemas do
     schema = sorted_schemas[i]
     for _, entity in pairs(dc_table[schema.name]) do
@@ -247,7 +251,7 @@ function declarative.load_into_db(dc_table)
 
       primary_key = schema:extract_pk_values(entity)
 
-      ok, err, err_t = kong.db[schema.name]:upsert(primary_key, entity)
+      ok, err, err_t = kong.db[schema.name]:upsert(primary_key, entity, options)
       if not ok then
         return nil, err, err_t
       end
@@ -442,12 +446,21 @@ function declarative.load_into_cache(dc_table, hash, shadow_page)
       end
     end
 
+    local transactions_enabled = dc_table._transactions_enabled
     local ids = {}
     for id, item in pairs(items) do
       table.insert(ids, id)
 
       local cache_key = dao:cache_key(id)
-      item = schema:transform(remove_nulls(item))
+      item = remove_nulls(item)
+      if transactions_enabled then
+        local err
+        item, err = schema:transform(item)
+        if not item then
+          return nil, err
+        end
+      end
+
       local ok, err = kong.core_cache:safe_set(cache_key, item, shadow_page)
       if not ok then
         return nil, err
