@@ -187,6 +187,7 @@ for _, strategy in helpers.each_strategy() do
         table.sort(toplevel_keys)
         assert.same({
           "_format_version",
+          "_transformations_enabled",
           "acls",
           "certificates",
           "consumers",

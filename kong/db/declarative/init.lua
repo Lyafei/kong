@@ -270,6 +270,7 @@ function declarative.export_from_db(fd)
 
   fd:write(declarative.to_yaml_string({
     _format_version = "1.1",
+    _transformations_enabled = false,
   }))
 
   for _, schema in ipairs(sorted_schemas) do
@@ -324,6 +325,7 @@ function declarative.export_config()
 
   local out = {
     _format_version = "1.1",
+    _transformations_enabled = false,
   }
 
   for _, schema in ipairs(sorted_schemas) do
@@ -384,6 +386,7 @@ end
 -- dc_table format:
 --   {
 --     _format_version: 1.1,
+--     _transformations_enabled: true,
 --     services: {
 --       ["<uuid>"] = { ... },
 --       ...
